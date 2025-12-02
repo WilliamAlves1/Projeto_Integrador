@@ -9,6 +9,9 @@ import DAO.Funcionario_DAO;
 import java.sql.Date;
 import modelos.Cliente;
 import modelos.Funcionario;
+import visualizar.Funcionario_View;
+import visualizar.Login_View;
+
 import javax.swing.JFrame;
 /**
  *
@@ -20,7 +23,8 @@ public class main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
+        Login_View tela = new Login_View();  //
+        tela.setVisible(true);
         
     }
 }
