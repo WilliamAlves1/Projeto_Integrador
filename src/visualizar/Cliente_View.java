@@ -8,10 +8,6 @@ import DAO.Cliente_DAO;
 import javax.swing.JOptionPane;
 import modelos.Cliente;
 
-/**
- *
- * @author tabaxco
- */
 public class Cliente_View extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Cliente_View.class.getName());
@@ -19,22 +15,15 @@ public class Cliente_View extends javax.swing.JFrame {
     public Cliente_View() {
         initComponents();
         setTitle("Gerenciamento de Clientes");
-        setLocationRelativeTo(null); // Centraliza a janela
-
-        // Opcional: Desabilitar edição da data, pois é gerada pelo sistema
+        setLocationRelativeTo(null);
         textData.setEditable(false);
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     */
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
 
-        // Inicialização dos Componentes
         jLabel4 = new javax.swing.JLabel("ID do Cliente:");
         textIDC = new javax.swing.JTextField();
         readButton = new javax.swing.JButton("Buscar");
@@ -51,13 +40,11 @@ public class Cliente_View extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel("Data Cadastro:");
         textData = new javax.swing.JTextField();
 
-        // Botões
         addButton = new javax.swing.JButton("Adicionar");
         altButton = new javax.swing.JButton("Alterar");
         delButton = new javax.swing.JButton("Deletar");
         returnButton = new javax.swing.JButton("Sair");
 
-        // Listeners
         addButton.addActionListener(this::addButtonActionPerformed);
         altButton.addActionListener(this::altButtonActionPerformed);
         delButton.addActionListener(this::delButtonActionPerformed);
@@ -68,43 +55,30 @@ public class Cliente_View extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        // --- Configuração do Layout GroupLayout Organizado ---
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
 
-        // Espaçamento automático
         jPanel1Layout.setAutoCreateGaps(true);
         jPanel1Layout.setAutoCreateContainerGaps(true);
 
-        // GRUPO HORIZONTAL (Colunas)
         jPanel1Layout.setHorizontalGroup(
                 jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-
-                        // Linha de Busca (ID)
                         .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel4) // Label ID
-                                .addComponent(textIDC, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel4)
+                                .addComponent(textIDC, 80, 80, 80)
                                 .addComponent(readButton))
-
-                        // Linha Nome (ocupa largura total relativa)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(textNome))
-
-                        // Linha E-mail e Telefone (dividindo a linha)
+                                .addComponent(textNome, 250, 300, 500))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(textEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(20) // Espaço extra
+                                .addComponent(textEmail, 150, 200, 350)
+                                .addGap(20)
                                 .addComponent(jLabel3)
-                                .addComponent(textTelefone))
-
-                        // Linha Data (Visual apenas)
+                                .addComponent(textTelefone, 120, 130, 150))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(textData, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-
-                        // Linha Botões (Centralizados)
+                                .addComponent(textData, 110, 120, 140))
                         .addGroup(javax.swing.GroupLayout.Alignment.CENTER, jPanel1Layout.createSequentialGroup()
                                 .addGap(20)
                                 .addComponent(addButton)
@@ -114,38 +88,26 @@ public class Cliente_View extends javax.swing.JFrame {
                                 .addGap(20))
         );
 
-        // GRUPO VERTICAL (Linhas)
         jPanel1Layout.setVerticalGroup(
                 jPanel1Layout.createSequentialGroup()
-
-                        // Linha ID/Busca
                         .addGap(10)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel4)
                                 .addComponent(textIDC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(readButton))
                         .addGap(20)
-
-                        // Linha Nome
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel1)
                                 .addComponent(textNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-
-                        // Linha Email e Telefone
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel2)
                                 .addComponent(textEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel3)
                                 .addComponent(textTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-
-                        // Linha Data
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel5)
                                 .addComponent(textData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-
-                        .addGap(40) // Espaço antes dos botões
-
-                        // Linha Botões
+                        .addGap(40)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(addButton)
                                 .addComponent(altButton)
@@ -166,7 +128,7 @@ public class Cliente_View extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>
+    }
 
     private void delButtonActionPerformed(java.awt.event.ActionEvent evt) {
         try {
@@ -179,7 +141,6 @@ public class Cliente_View extends javax.swing.JFrame {
             Cliente delCliente = new Cliente();
             delCliente.setID_Cliente(IDcliente);
 
-            // Confirmação de segurança
             int confirm = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir o cliente ID " + IDcliente + "?");
             if (confirm == JOptionPane.YES_OPTION) {
                 Cliente_DAO.deletar(delCliente);
@@ -208,7 +169,6 @@ public class Cliente_View extends javax.swing.JFrame {
                 textNome.setText(readCliente.getNome());
                 textTelefone.setText(readCliente.getTelefone());
                 textEmail.setText(readCliente.getEmail());
-                // Verifica se a data não é nula antes de converter
                 if(readCliente.getDataCadastro() != null) {
                     textData.setText(readCliente.getDataCadastro().toString());
                 }
@@ -223,18 +183,18 @@ public class Cliente_View extends javax.swing.JFrame {
     }
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        String nome = textNome.getText();
-        java.sql.Date hoje = new java.sql.Date(System.currentTimeMillis());
-        String email = textEmail.getText();
-        String telefone = textTelefone.getText();
-
-        Cliente novoCliente = new Cliente();
-        novoCliente.setNome(nome);
-        novoCliente.setDataCadastro(hoje);
-        novoCliente.setEmail(email);
-        novoCliente.setTelefone(telefone);
-
         try {
+            String nome = textNome.getText();
+            java.sql.Date hoje = new java.sql.Date(System.currentTimeMillis());
+            String email = textEmail.getText();
+            String telefone = textTelefone.getText();
+
+            Cliente novoCliente = new Cliente();
+            novoCliente.setNome(nome);
+            novoCliente.setDataCadastro(hoje);
+            novoCliente.setEmail(email);
+            novoCliente.setTelefone(telefone);
+
             Cliente_DAO.inserir(novoCliente);
             JOptionPane.showMessageDialog(null, "Cliente inserido corretamente.");
             limparCampos();
@@ -258,28 +218,23 @@ public class Cliente_View extends javax.swing.JFrame {
 
             Cliente_DAO.atualizar(altCliente);
             JOptionPane.showMessageDialog(null, "Cliente atualizado corretamente.");
+            limparCampos();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage());
         }
     }
 
     private void returnButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // new MenuPrincipal().setVisible(true); // Descomente se tiver menu
         dispose();
     }
 
-    // Método para limpar a tela após ações
     private void limparCampos() {
         textNome.setText("");
         textEmail.setText("");
         textTelefone.setText("");
         textData.setText("");
-        // textIDC.setText(""); // Opcional limpar o ID
     }
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -292,11 +247,9 @@ public class Cliente_View extends javax.swing.JFrame {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new Cliente_View().setVisible(true));
     }
 
-    // Variables declaration - do not modify
     private javax.swing.JButton addButton;
     private javax.swing.JButton altButton;
     private javax.swing.JButton delButton;
@@ -313,5 +266,4 @@ public class Cliente_View extends javax.swing.JFrame {
     private javax.swing.JTextField textIDC;
     private javax.swing.JTextField textNome;
     private javax.swing.JTextField textTelefone;
-    // End of variables declaration
 }
