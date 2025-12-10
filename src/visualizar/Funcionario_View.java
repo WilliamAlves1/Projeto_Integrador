@@ -1,177 +1,269 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package visualizar;
 
 import javax.swing.JOptionPane;
 import modelos.Funcionario;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.border.*;
 
-public class Funcionario_View extends javax.swing.JFrame {
+public class Funcionario_View extends JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Funcionario_View.class.getName());
 
+    private final Color COLOR_BG = new Color(243, 246, 249);
+    private final Color COLOR_CARD = Color.WHITE;
+    private final Color COLOR_TITLE = new Color(33, 37, 41);
+    private final Color COLOR_LABEL = new Color(73, 80, 87);
+    private final Color COLOR_BORDER = new Color(206, 212, 218);
+    private final Color BTN_PRIMARY = new Color(13, 110, 253);
+    private final Color BTN_SUCCESS = new Color(25, 135, 84);
+    private final Color BTN_DANGER = new Color(220, 53, 69);
+    private final Color BTN_WARNING = new Color(255, 193, 7);
+    private final Color BTN_SECONDARY = new Color(108, 117, 125);
+
+    private final Font FONT_TITLE = new Font("Segoe UI", Font.BOLD, 26);
+    private final Font FONT_LABEL = new Font("Segoe UI", Font.BOLD, 14);
+    private final Font FONT_INPUT = new Font("Segoe UI", Font.PLAIN, 16);
+
+    private JButton addButton, altButton, delButton, readButton, returnButton;
+    private JTextField textIDF, textNome, textTelefone, textEmail, textFunc, textDepartamento, textSalario, textData, textUser, textSenha;
+
     public Funcionario_View() {
         initComponents();
-        setTitle("Gerenciamento de Funcionários");
-        setLocationRelativeTo(null);
+        setTitle("Sistema DahoDB - Gerenciamento de Funcionários");
+        setSize(1700, 1000);
         textData.setEditable(false);
+        setLocationRelativeTo(null);
     }
 
-    @SuppressWarnings("unchecked")
     private void initComponents() {
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1 = new javax.swing.JPanel();
+        JPanel mainPanel = new JPanel(new GridBagLayout());
+        mainPanel.setBackground(COLOR_BG);
 
-        jLabel4 = new javax.swing.JLabel("ID Funcionário:");
-        textIDF = new javax.swing.JTextField();
-        readButton = new javax.swing.JButton("Buscar");
+        JPanel cardPanel = new JPanel(new GridBagLayout());
+        cardPanel.setBackground(COLOR_CARD);
+        cardPanel.setBorder(new CompoundBorder(new LineBorder(new Color(0, 0, 0, 20), 1), new EmptyBorder(30, 40, 30, 40)));
 
-        jLabel1 = new javax.swing.JLabel("Nome Completo:");
-        textNome = new javax.swing.JTextField();
+        GridBagConstraints mainGbc = new GridBagConstraints();
+        mainGbc.gridx = 0;
+        mainGbc.gridy = 0;
+        mainGbc.fill = GridBagConstraints.BOTH;
+        mainGbc.weightx = 1.0;
+        mainGbc.weighty = 1.0;
+        mainGbc.insets = new Insets(30, 30, 30, 30);
+        mainPanel.add(cardPanel, mainGbc);
 
-        jLabel2 = new javax.swing.JLabel("Telefone:");
-        textTelefone = new javax.swing.JTextField();
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 15, 10, 15);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.NORTHWEST;
 
-        jLabel3 = new javax.swing.JLabel("E-mail:");
-        textEmail = new javax.swing.JTextField();
+        JLabel lblTitle = new JLabel("Gerenciamento de Funcionários");
+        lblTitle.setFont(FONT_TITLE);
+        lblTitle.setForeground(COLOR_TITLE);
 
-        javax.swing.JLabel lblCargo = new javax.swing.JLabel("Função/Cargo:");
-        textFunc = new javax.swing.JTextField();
+        JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        headerPanel.setBackground(COLOR_CARD);
+        headerPanel.add(lblTitle);
+        headerPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, new Color(240, 240, 240)));
 
-        jLabel6 = new javax.swing.JLabel("Departamento:");
-        textDepartamento = new javax.swing.JTextField();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 4;
+        gbc.weightx = 1.0;
+        gbc.insets = new Insets(0, 0, 40, 0);
+        cardPanel.add(headerPanel, gbc);
 
-        jLabel5 = new javax.swing.JLabel("Salário (R$):");
-        textSalario = new javax.swing.JTextField();
+        gbc.insets = new Insets(10, 15, 10, 15);
 
-        jLabel8 = new javax.swing.JLabel("Data Contratação:");
-        textData = new javax.swing.JTextField();
+        gbc.gridwidth = 1;
+        gbc.gridy++;
+        gbc.gridx = 0;
+        gbc.weightx = 0.0;
+        cardPanel.add(createLabel("ID Funcionário:"), gbc);
 
-        jLabel7 = new javax.swing.JLabel("Usuário (Login):");
-        textUser = new javax.swing.JTextField();
+        textIDF = createTextField();
+        gbc.gridx = 1;
+        gbc.weightx = 0.3;
+        cardPanel.add(textIDF, gbc);
 
-        jLabel9 = new javax.swing.JLabel("Senha:");
-        textSenha = new javax.swing.JTextField();
+        readButton = createButton("Buscar", BTN_PRIMARY, Color.WHITE);
+        gbc.gridx = 2;
+        gbc.weightx = 0.0;
+        cardPanel.add(readButton, gbc);
 
-        addButton = new javax.swing.JButton("Adicionar");
-        altButton = new javax.swing.JButton("Alterar");
-        delButton = new javax.swing.JButton("Deletar");
-        returnButton = new javax.swing.JButton("Voltar");
+        gbc.gridx = 3;
+        gbc.weightx = 1.0;
+        cardPanel.add(new JLabel(""), gbc);
+
+        gbc.gridy++;
+        gbc.gridx = 0;
+        gbc.weightx = 0.0;
+        cardPanel.add(createLabel("Nome Completo:"), gbc);
+
+        textNome = createTextField();
+        gbc.gridx = 1;
+        gbc.gridwidth = 3;
+        gbc.weightx = 1.0;
+        cardPanel.add(textNome, gbc);
+
+        gbc.gridwidth = 1;
+        gbc.gridy++;
+        gbc.gridx = 0;
+        gbc.weightx = 0.0;
+        cardPanel.add(createLabel("E-mail:"), gbc);
+
+        textEmail = createTextField();
+        gbc.gridx = 1;
+        gbc.weightx = 1.0;
+        cardPanel.add(textEmail, gbc);
+
+        gbc.gridx = 2;
+        gbc.weightx = 0.0;
+        cardPanel.add(createLabel("Telefone:"), gbc);
+
+        textTelefone = createTextField();
+        gbc.gridx = 3;
+        gbc.weightx = 1.0;
+        cardPanel.add(textTelefone, gbc);
+
+        gbc.gridy++;
+        gbc.gridx = 0;
+        gbc.weightx = 0.0;
+        cardPanel.add(createLabel("Função/Cargo:"), gbc);
+
+        textFunc = createTextField();
+        gbc.gridx = 1;
+        gbc.weightx = 1.0;
+        cardPanel.add(textFunc, gbc);
+
+        gbc.gridx = 2;
+        gbc.weightx = 0.0;
+        cardPanel.add(createLabel("Departamento:"), gbc);
+
+        textDepartamento = createTextField();
+        gbc.gridx = 3;
+        gbc.weightx = 1.0;
+        cardPanel.add(textDepartamento, gbc);
+
+        gbc.gridy++;
+        gbc.gridx = 0;
+        gbc.weightx = 0.0;
+        cardPanel.add(createLabel("Salário (R$):"), gbc);
+
+        textSalario = createTextField();
+        gbc.gridx = 1;
+        gbc.weightx = 1.0;
+        cardPanel.add(textSalario, gbc);
+
+        gbc.gridx = 2;
+        gbc.weightx = 0.0;
+        cardPanel.add(createLabel("Data Contratação:"), gbc);
+
+        textData = createTextField();
+        textData.setBackground(new Color(245, 245, 245));
+        gbc.gridx = 3;
+        gbc.weightx = 1.0;
+        cardPanel.add(textData, gbc);
+
+        gbc.gridy++;
+        gbc.gridx = 0;
+        gbc.weightx = 0.0;
+        cardPanel.add(createLabel("Usuário (Login):"), gbc);
+
+        textUser = createTextField();
+        gbc.gridx = 1;
+        gbc.weightx = 1.0;
+        cardPanel.add(textUser, gbc);
+
+        gbc.gridx = 2;
+        gbc.weightx = 0.0;
+        cardPanel.add(createLabel("Senha:"), gbc);
+
+        textSenha = createTextField();
+        gbc.gridx = 3;
+        gbc.weightx = 1.0;
+        cardPanel.add(textSenha, gbc);
+
+        JPanel bottomSpacer = new JPanel();
+        bottomSpacer.setBackground(COLOR_CARD);
+        gbc.gridy++;
+        gbc.weighty = 1.0;
+        cardPanel.add(bottomSpacer, gbc);
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 0));
+        buttonPanel.setBackground(COLOR_CARD);
+        buttonPanel.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, new Color(240, 240, 240)));
+
+        JPanel paddingPanel = new JPanel();
+        paddingPanel.setBackground(COLOR_CARD);
+        paddingPanel.setBorder(new EmptyBorder(20, 0, 0, 0));
+        paddingPanel.add(buttonPanel);
+
+        addButton = createButton("Adicionar", BTN_SUCCESS, Color.WHITE);
+        altButton = createButton("Salvar Edição", BTN_WARNING, new Color(33, 37, 41));
+        delButton = createButton("Deletar", BTN_DANGER, Color.WHITE);
+        returnButton = createButton("Voltar", BTN_SECONDARY, Color.WHITE);
+
+        buttonPanel.add(returnButton);
+        buttonPanel.add(delButton);
+        buttonPanel.add(altButton);
+        buttonPanel.add(addButton);
+
+        gbc.gridy++;
+        gbc.weighty = 0.0;
+        gbc.insets = new Insets(20, 15, 10, 15);
+        cardPanel.add(paddingPanel, gbc);
+
+        mainPanel.add(cardPanel, mainGbc);
+        setContentPane(mainPanel);
 
         addButton.addActionListener(this::addButtonActionPerformed);
         altButton.addActionListener(this::altButtonActionPerformed);
         delButton.addActionListener(this::delButtonActionPerformed);
         readButton.addActionListener(this::readButtonActionPerformed);
         returnButton.addActionListener(this::returnButtonActionPerformed);
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-
-        jPanel1Layout.setAutoCreateGaps(true);
-        jPanel1Layout.setAutoCreateContainerGaps(true);
-
-        jPanel1Layout.setHorizontalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addComponent(textIDF, 80, 80, 80)
-                                .addComponent(readButton))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(textNome, 250, 300, 500))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(textTelefone, 120, 130, 150)
-                                .addGap(20)
-                                .addComponent(jLabel3)
-                                .addComponent(textEmail, 150, 200, 350))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(lblCargo, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(textFunc, 130, 150, 200)
-                                .addGap(20)
-                                .addComponent(jLabel6)
-                                .addComponent(textDepartamento, 130, 150, 250))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(textSalario, 100, 120, 150)
-                                .addGap(20)
-                                .addComponent(jLabel8)
-                                .addComponent(textData, 110, 120, 140))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(textUser, 120, 140, 200)
-                                .addGap(20)
-                                .addComponent(jLabel9)
-                                .addComponent(textSenha, 120, 140, 200))
-                        .addGroup(javax.swing.GroupLayout.Alignment.CENTER, jPanel1Layout.createSequentialGroup()
-                                .addGap(20)
-                                .addComponent(addButton)
-                                .addComponent(altButton)
-                                .addComponent(delButton)
-                                .addComponent(returnButton)
-                                .addGap(20))
-        );
-
-        jPanel1Layout.setVerticalGroup(
-                jPanel1Layout.createSequentialGroup()
-                        .addGap(10)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel4)
-                                .addComponent(textIDF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(readButton))
-                        .addGap(20)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel1)
-                                .addComponent(textNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel2)
-                                .addComponent(textTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel3)
-                                .addComponent(textEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(lblCargo)
-                                .addComponent(textFunc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel6)
-                                .addComponent(textDepartamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel5)
-                                .addComponent(textSalario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel8)
-                                .addComponent(textData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel7)
-                                .addComponent(textUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel9)
-                                .addComponent(textSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(30)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(addButton)
-                                .addComponent(altButton)
-                                .addComponent(delButton)
-                                .addComponent(returnButton))
-                        .addGap(20)
-        );
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-
-        pack();
     }
 
-    private void altButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private JLabel createLabel(String text) {
+        JLabel lbl = new JLabel(text);
+        lbl.setFont(FONT_LABEL);
+        lbl.setForeground(COLOR_LABEL);
+        return lbl;
+    }
+
+    private JTextField createTextField() {
+        JTextField txt = new JTextField(15);
+        txt.setFont(FONT_INPUT);
+        txt.setForeground(Color.BLACK);
+        txt.setBackground(Color.WHITE);
+        txt.setBorder(new CompoundBorder(new LineBorder(COLOR_BORDER), new EmptyBorder(8, 10, 8, 10)));
+        return txt;
+    }
+
+    private JButton createButton(String text, Color bg, Color fg) {
+        JButton btn = new JButton(text);
+        btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        btn.setForeground(fg);
+        btn.setBackground(bg);
+        btn.setFocusPainted(false);
+        btn.setBorder(new EmptyBorder(12, 25, 12, 25));
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btn.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent evt) {
+                btn.setBackground(bg.darker());
+            }
+            public void mouseExited(MouseEvent evt) {
+                btn.setBackground(bg);
+            }
+        });
+        return btn;
+    }
+
+    private void altButtonActionPerformed(ActionEvent evt) {
         try {
             int id = Integer.parseInt(textIDF.getText());
             String nome = textNome.getText();
@@ -184,7 +276,6 @@ public class Funcionario_View extends javax.swing.JFrame {
             String senha = textSenha.getText();
 
             Funcionario altFuncionario = new Funcionario();
-
             altFuncionario.setID_Funcionario(id);
             altFuncionario.setNome(nome);
             altFuncionario.setCargo(cargo);
@@ -203,20 +294,18 @@ public class Funcionario_View extends javax.swing.JFrame {
         }
     }
 
-    private void delButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void delButtonActionPerformed(ActionEvent evt) {
         try {
-            if(textIDF.getText().isEmpty()) {
+            if (textIDF.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Digite o ID para excluir.");
                 return;
             }
 
             int id = Integer.parseInt(textIDF.getText());
-
             int confirm = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja demitir/excluir o funcionário ID " + id + "?");
-            if(confirm == JOptionPane.YES_OPTION) {
+            if (confirm == JOptionPane.YES_OPTION) {
                 Funcionario delFuncionario = new Funcionario();
                 delFuncionario.setID_Funcionario(id);
-
                 DAO.Funcionario_DAO.deletar(delFuncionario);
                 JOptionPane.showMessageDialog(null, "Funcionário deletado corretamente.");
                 limparCampos();
@@ -226,15 +315,14 @@ public class Funcionario_View extends javax.swing.JFrame {
         }
     }
 
-    private void readButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void readButtonActionPerformed(ActionEvent evt) {
         try {
-            if(textIDF.getText().isEmpty()) {
+            if (textIDF.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Digite um ID para buscar.");
                 return;
             }
 
             int id = Integer.parseInt(textIDF.getText());
-
             Funcionario readFuncionario = new Funcionario();
             readFuncionario.setID_Funcionario(id);
 
@@ -256,7 +344,7 @@ public class Funcionario_View extends javax.swing.JFrame {
                 textUser.setText(readFuncionario.getUsuario());
                 textSenha.setText(readFuncionario.getSenha());
 
-                if(readFuncionario.getDataCadastro() != null){
+                if (readFuncionario.getDataCadastro() != null) {
                     textData.setText(readFuncionario.getDataCadastro().toString());
                 }
             } else {
@@ -268,15 +356,12 @@ public class Funcionario_View extends javax.swing.JFrame {
         }
     }
 
-    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void addButtonActionPerformed(ActionEvent evt) {
         try {
             String nome = textNome.getText();
             String telefone = textTelefone.getText();
             String cargo = textFunc.getText();
-
-            String salStr = textSalario.getText().replace(",", ".");
-            double salario = Double.parseDouble(salStr);
-
+            double salario = Double.parseDouble(textSalario.getText().replace(",", "."));
             String departamento = textDepartamento.getText();
             String email = textEmail.getText();
             String usuario = textUser.getText();
@@ -284,7 +369,6 @@ public class Funcionario_View extends javax.swing.JFrame {
             java.sql.Date hoje = new java.sql.Date(System.currentTimeMillis());
 
             Funcionario addFuncionario = new Funcionario();
-
             addFuncionario.setNome(nome);
             addFuncionario.setCargo(cargo);
             addFuncionario.setTelefone(telefone);
@@ -303,7 +387,7 @@ public class Funcionario_View extends javax.swing.JFrame {
         }
     }
 
-    private void returnButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void returnButtonActionPerformed(ActionEvent evt) {
         new MenuPrincipal().setVisible(true);
         dispose();
     }
@@ -322,9 +406,9 @@ public class Funcionario_View extends javax.swing.JFrame {
 
     public static void main(String args[]) {
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
@@ -332,32 +416,6 @@ public class Funcionario_View extends javax.swing.JFrame {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
 
-        java.awt.EventQueue.invokeLater(() -> new Funcionario_View().setVisible(true));
+        EventQueue.invokeLater(() -> new Funcionario_View().setVisible(true));
     }
-
-    private javax.swing.JButton addButton;
-    private javax.swing.JButton altButton;
-    private javax.swing.JButton delButton;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JButton readButton;
-    private javax.swing.JButton returnButton;
-    private javax.swing.JTextField textData;
-    private javax.swing.JTextField textDepartamento;
-    private javax.swing.JTextField textEmail;
-    private javax.swing.JTextField textFunc;
-    private javax.swing.JTextField textIDF;
-    private javax.swing.JTextField textNome;
-    private javax.swing.JTextField textSalario;
-    private javax.swing.JTextField textSenha;
-    private javax.swing.JTextField textTelefone;
-    private javax.swing.JTextField textUser;
 }

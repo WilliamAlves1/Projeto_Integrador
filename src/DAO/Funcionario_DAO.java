@@ -33,7 +33,6 @@ public class Funcionario_DAO {
         }
     }
 
-
     public static void atualizar(Funcionario funcionario) throws SQLException {
         String sql = "UPDATE Funcionario SET Nome = ?, Cargo = ?, Usuario = ?, Senha = ?, Email = ?, Departamento = ? WHERE ID_Funcionario = ?";
 
@@ -46,7 +45,6 @@ public class Funcionario_DAO {
             stmt.setString(4, funcionario.getSenha());
             stmt.setString(5, funcionario.getEmail());
             stmt.setString(6, funcionario.getDepartamento());
-            stmt.setInt(7, funcionario.getID_Funcionario());
             
             DAO.Funcionario_Telefone_DAO.atualizar(funcionario);
             DAO.Salario_DAO.atualizar(funcionario);
@@ -55,7 +53,6 @@ public class Funcionario_DAO {
         }
     }
 
-
     public static void deletar(Funcionario funcionario) throws SQLException {
         String sql = "DELETE FROM Funcionario WHERE ID_Funcionario = ?";
 
@@ -63,7 +60,7 @@ public class Funcionario_DAO {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, funcionario.getID_Funcionario());
-            
+
             DAO.Funcionario_Telefone_DAO.deletar(funcionario);
             DAO.Salario_DAO.deletar(funcionario);
 
@@ -71,61 +68,74 @@ public class Funcionario_DAO {
         }
     }
 
-
     public static Funcionario buscarPorId(Funcionario funcionario) throws SQLException {
+        String sqlFuncionario = "SELECT * FROM Funcionario WHERE ID_Funcionario = ?";
+        String sqlTelefone = "SELECT Telefone FROM Funcionario_Telefone WHERE ID_Funcionario = ?";
+        String sqlSalario = "SELECT Valor_Salario FROM Salario WHERE ID_Funcionario = ?";
 
-    String sqlFuncionario = "SELECT * FROM Funcionario WHERE ID_Funcionario = ?";
-    String sqlTelefone = "SELECT Telefone FROM Funcionario_Telefone WHERE ID_Funcionario = ?";
-    String sqlSalario = "SELECT Valor_Salario FROM Salario WHERE ID_Funcionario = ?";
+        try (Connection conn = conectar.getConexao()) {
 
-    try (Connection conn = conectar.getConexao()) {
+            try (PreparedStatement stmt = conn.prepareStatement(sqlFuncionario)) {
+                stmt.setInt(1, funcionario.getID_Funcionario());
 
-        
-        try (PreparedStatement stmt = conn.prepareStatement(sqlFuncionario)) {
-            stmt.setInt(1, funcionario.getID_Funcionario());
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        funcionario.setNome(rs.getString("Nome"));
+                        funcionario.setCargo(rs.getString("Cargo"));
+                        funcionario.setDepartamento(rs.getString("Departamento"));
+                        funcionario.setUsuario(rs.getString("Usuario"));
+                        funcionario.setSenha(rs.getString("Senha"));
+                        funcionario.setEmail(rs.getString("Email"));
+                        funcionario.setDataCadastro(rs.getDate("Data_Contratacao"));
+                    } else {
+                        return null;
+                    }
+                }
+            }
 
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    funcionario.setNome(rs.getString("Nome"));
-                    funcionario.setCargo(rs.getString("Cargo"));
-                    funcionario.setDepartamento(rs.getString("Departamento"));
-                    funcionario.setUsuario(rs.getString("Usuario"));
-                    funcionario.setSenha(rs.getString("Senha"));
-                    funcionario.setEmail(rs.getString("Email"));
-                    funcionario.setDataCadastro(rs.getDate("Data_Contratacao"));
-                } else {
-                    return null; 
+            try (PreparedStatement stmt2 = conn.prepareStatement(sqlTelefone)) {
+                stmt2.setInt(1, funcionario.getID_Funcionario());
+
+                try (ResultSet rs2 = stmt2.executeQuery()) {
+                    if (rs2.next()) {
+                        funcionario.setTelefone(rs2.getString("Telefone"));
+                    } else {
+                        funcionario.setTelefone(null);
+                    }
+                }
+            }
+
+            try (PreparedStatement stmt3 = conn.prepareStatement(sqlSalario)) {
+                stmt3.setInt(1, funcionario.getID_Funcionario());
+
+                try (ResultSet rs3 = stmt3.executeQuery()) {
+                    if (rs3.next()) {
+                        funcionario.setSalario(rs3.getDouble("Valor_Salario"));
+                    } else {
+                        funcionario.setSalario(0.0);
+                    }
                 }
             }
         }
-
-        
-        try (PreparedStatement stmt2 = conn.prepareStatement(sqlTelefone)) {
-            stmt2.setInt(1, funcionario.getID_Funcionario());
-
-            try (ResultSet rs2 = stmt2.executeQuery()) {
-                if (rs2.next()) {
-                    funcionario.setTelefone(rs2.getString("Telefone"));
-                } else {
-                    funcionario.setTelefone(null); 
-                }
-            }
-        }
-
-        
-        try (PreparedStatement stmt3 = conn.prepareStatement(sqlSalario)) {
-            stmt3.setInt(1, funcionario.getID_Funcionario());
-
-            try (ResultSet rs3 = stmt3.executeQuery()) {
-                if (rs3.next()) {
-                    funcionario.setSalario(rs3.getDouble("Valor_Salario"));
-                } else {
-                    funcionario.setSalario(0.0); 
-                }
-            }
-        }
+        return funcionario;
     }
 
-    return funcionario;
-}
+    public static boolean validarLogin(String usuario, String senha) {
+        String sql = "SELECT * FROM Funcionario WHERE Usuario = ? AND Senha = ?";
+
+        try (Connection conn = conectar.getConexao();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, usuario);
+            stmt.setString(2, senha);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
