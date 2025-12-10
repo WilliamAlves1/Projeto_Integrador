@@ -34,7 +34,7 @@ public class Funcionario_DAO {
     }
 
     public static void atualizar(Funcionario funcionario) throws SQLException {
-        String sql = "UPDATE Funcionario SET Nome = ?, Cargo = ?, Usuario = ?, Senha = ? WHERE ID_Funcionario = ?";
+        String sql = "UPDATE Funcionario SET Nome = ?, Cargo = ?, Usuario = ?, Senha = ?, Departamento = ?, Data_Contratacao = ? WHERE ID_Funcionario = ?";
 
         try (Connection conn = conectar.getConexao();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -43,7 +43,9 @@ public class Funcionario_DAO {
             stmt.setString(2, funcionario.getCargo());
             stmt.setString(3, funcionario.getUsuario());
             stmt.setString(4, funcionario.getSenha());
-            stmt.setInt(5, funcionario.getID_Funcionario());
+            stmt.setString(5, funcionario.getDepartamento());
+            stmt.setDate(6, funcionario.getDataCadastro());
+            stmt.setInt(7, funcionario.getID_Funcionario());
 
             DAO.Funcionario_Telefone_DAO.atualizar(funcionario);
             DAO.Salario_DAO.atualizar(funcionario);
